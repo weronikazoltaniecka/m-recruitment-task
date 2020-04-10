@@ -34,6 +34,32 @@ class BasketPage {
         cy.get('.button.secondary').contains('Go to my bag').click();
         cy.get('.cart-page__checkout-action button').should('be.visible');
     }
+
+    /**
+     * Verifies product in basket
+     * @param {string} productName - name of the product added to basket
+     * @param {number} quantity - amount of product
+     * @param {number} unitPrice - unit price of product
+     */
+    verifyProductInBasket(productName, quantity, unitPrice) {
+        cy.get('.cart-table__thumbnail').its('length').should('eq', 1);
+        cy.get('.cart-table__thumbnail').invoke('text').then((text) => {
+            expect(text.toLowerCase()).to.include(
+                `${productName}`,
+                `${productName} should be added instead of ${text}`
+            );
+        });
+        cy.get('.cart-table__quantity-cell__controls').invoke('text').then((text) => {
+            expect(text.trim()).to.eql(
+                `${quantity}`,
+                `${quantity} bottle/s should be visible in a bag`
+            );
+        });
+        cy.get('tr').eq(1).find('td').eq(1).invoke('text').then((text) => {
+            const price = formatHelper.getPriceFormattedValue(text);
+            expect(price).to.eql(unitPrice, `Product price in basket should equal ${unitPrice}`);
+        });
+    }
 }
 
 module.exports = BasketPage;

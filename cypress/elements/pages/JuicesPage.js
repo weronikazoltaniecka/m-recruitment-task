@@ -12,7 +12,8 @@ class JuicesPage {
 
     /**
      * Selects sort options
-     * @param sortOption
+     * @param {string} sortOption - sort option to be selected. Supported values: "Price Low-High", "Price High-Low",
+     * "Name Increasing", "Name Decreasing"
      */
     selectSortOption(sortOption) {
         cy.get('.sc-gipzik.bdqRPy').click();
@@ -29,7 +30,6 @@ class JuicesPage {
     verifySortByPrice(descending) {
         cy.get('.sc-iujRgT.cWuyuM')
             .then($prices => {
-                // remove "$" from prices and convert to strings
                 const prices = $prices
                     .toArray()
                     .map($el => (formatHelper.getPriceFormattedValue($el.innerText)).toFixed(2));
@@ -49,7 +49,7 @@ class JuicesPage {
     }
 
     /**
-     *
+     * Verifies that items are correctly sorted
      * @param {string} sortOption - sort option. Supported values: "Price Low-High", "Price High-Low", "Name Increasing",
      * "Name Decreasing"
      */
@@ -88,6 +88,10 @@ class JuicesPage {
         });
     }
 
+    /**
+     * Goes to specified juice Product Page
+     * @param {string} flavor - juice flavor. Exemplary values: "banana", "orange", "bean"
+     */
     goToJuiceItemPage(flavor) {
         this.loadMoreItems();
         cy.get(`a[href^="/product/${flavor}-juice/"]`).should('be.visible');
@@ -101,13 +105,13 @@ class JuicesPage {
      */
     addJuiceToBasket(amount, size) {
         const bottleSize = (size < 1) ? size * 100 : size;
-        cy.get('.sc-jTzLTM.kmwxxB').should('be.visible');
+        cy.get('.sc-jTzLTM.kmwxxB', {timeout: 10000}).should('be.visible');
         cy.get('.sc-jTzLTM.kmwxxB').first().click();
         cy.get('.sc-fYxtnH.hdYsNe').contains(`${bottleSize}`).click();
         cy.get('.sc-cSHVUG.gKbeaI').eq(1).type(`{selectall}${amount}`);
-        cy.get('.product-description').then($body => {
+        cy.get('.product-description').then($el => {
             let index;
-            if ($body.find('.product-description__undiscounted_price').length > 0) {   //evaluates as true
+            if ($el.find('.product-description__undiscounted_price').length > 0) {   //evaluates as true
                 index = 2;
             } else {
                 index = 0;
@@ -115,7 +119,6 @@ class JuicesPage {
             cy.get('.product-description span').eq(index).invoke('text')
                 .then( (text) => {
                     globalVar.productPrice = formatHelper.getPriceFormattedValue(text);
-                    console.log('FORMATED PRICE ' + globalVar.productPrice);
                 });
         });
         cy.get('[class^="product-description__action"]').click();

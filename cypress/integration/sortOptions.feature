@@ -8,7 +8,7 @@ Feature: Items sorted by specified sort options
 
     Given I am on Juices page
     When I select "<sorting>" sort option
-    Then the items should be sorted by Price Low-High
+    Then the items should be correctly sorted
 
 
     Examples:

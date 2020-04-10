@@ -23,7 +23,7 @@ global.globalVar = new GlobalVars();
 beforeEach( () => {
     cy.clearLocalStorage({ log:false });
     cy.visit('/');
-    cy.get('.main-menu__item', {timeout: 15000}).first().should('be.visible');
+    cy.get('.main-menu__item', {timeout: 30000}).first().should('be.visible');
 });
 
 
