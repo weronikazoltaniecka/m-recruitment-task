@@ -18,9 +18,10 @@ class JuicesPage {
     selectSortOption(sortOption) {
         cy.get('.sc-gipzik.bdqRPy').click();
         cy.get('[id^="react-select-2"]').contains(`${sortOption}`).click();
-        cy.get('.sc-gipzik.bdqRPy').invoke('text').then((text) => {
-            expect(text.trim()).to.eql(sortOption);
-        });
+        cy.get('.sc-gipzik.bdqRPy').invoke('text')
+            .then((text) => {
+                expect(text.trim()).to.eql(sortOption);
+            });
     }
 
     /**
@@ -43,9 +44,10 @@ class JuicesPage {
     loadMoreItems() {
         cy.get('.sc-gzVnrw.eLCqQM', {timeout: 10000}).should('be.visible');
         cy.get('.sc-gzVnrw.eLCqQM').click();
-        cy.get('.sc-kGXeez.DZmXt').should('be.visible').then(() => {
-            cy.get('.sc-kGXeez.DZmXt').should('not.be.visible')
-        });
+        cy.get('.sc-kGXeez.DZmXt', {timeout: 10000}).should('be.visible')
+            .then(() => {
+                cy.get('.sc-kGXeez.DZmXt').should('not.be.visible')
+            });
     }
 
     /**
@@ -82,10 +84,11 @@ class JuicesPage {
      * @param {boolean} descending - whether the list should be sorted in descending or ascending order
      */
     verifySortByName(descending) {
-        cy.get('.sc-bAeIUo.cpiuyN').then($names => {
-            const names = $names.toArray();
-            expect(names).to.be.sorted(descending);
-        });
+        cy.get('.sc-bAeIUo.cpiuyN')
+            .then($names => {
+                const names = $names.toArray();
+                expect(names).to.be.sorted(descending);
+            });
     }
 
     /**
@@ -109,18 +112,19 @@ class JuicesPage {
         cy.get('.sc-jTzLTM.kmwxxB').first().click();
         cy.get('.sc-fYxtnH.hdYsNe').contains(`${bottleSize}`).click();
         cy.get('.sc-cSHVUG.gKbeaI').eq(1).type(`{selectall}${amount}`);
-        cy.get('.product-description').then($el => {
-            let index;
-            if ($el.find('.product-description__undiscounted_price').length > 0) {   //evaluates as true
-                index = 2;
-            } else {
-                index = 0;
-            }
-            cy.get('.product-description span').eq(index).invoke('text')
-                .then( (text) => {
-                    globalVar.productPrice = formatHelper.getPriceFormattedValue(text);
-                });
-        });
+        cy.get('.product-description')
+            .then($el => {
+                let index;
+                if ($el.find('.product-description__undiscounted_price').length > 0) {   //evaluates as true
+                    index = 2;
+                } else {
+                    index = 0;
+                }
+                cy.get('.product-description span').eq(index).invoke('text')
+                    .then((text) => {
+                        globalVar.productPrice = formatHelper.getPriceFormattedValue(text);
+                    });
+            });
         cy.get('[class^="product-description__action"]').click();
     }
 }
