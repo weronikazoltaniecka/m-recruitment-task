@@ -1,0 +1,6 @@
+{
+  "baseUrl": "https://demo.saleor.io/",
+  "testFiles": "**/*.feature",
+  "chromeWebSecurity": false,
+  "defaultCommandTimeout": 8000
+}

@@ -1,0 +1,30 @@
+{
+  "name": "mirumee-task",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "test:headless": "cypress run",
+    "test": "cypress open"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "pug": "^2.0.4",
+    "cucumber": "latest",
+    "chai": "latest"
+  },
+  "devDependencies": {
+    "chai-sorted": "0.2.0",
+    "chai-subset": "^1.6.0",
+    "cypress": "^4.3.0",
+    "cypress-cucumber-preprocessor": "^2.2.1"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true,
+    "stepDefinitions": "cypress/integration"
+  }
+}
